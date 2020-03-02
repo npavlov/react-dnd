@@ -8,63 +8,63 @@ import { ICard } from './models';
 const list1: ICard[] = [
   {
     id: 1,
-    text: 'Write a cool JS library'
+    text: 'Write a cool JS library',
   },
   {
     id: 2,
-    text: 'Make it generic enough'
+    text: 'Make it generic enough',
   },
   {
     id: 3,
-    text: 'Write README'
+    text: 'Write README',
   },
   {
     id: 4,
-    text: 'Create some examples'
+    text: 'Create some examples',
   },
   {
     id: 5,
-    text: 'Spam in Twitter and IRC to promote it'
+    text: 'Spam in Twitter and IRC to promote it',
   },
   {
     id: 6,
-    text: '???'
+    text: '???',
   },
   {
     id: 7,
-    text: 'PROFIT'
-  }
+    text: 'PROFIT',
+  },
 ];
 
 const list2: ICard[] = [
   {
     id: 8,
-    text: 'eight'
+    text: 'eight',
   },
   {
     id: 9,
-    text: 'nine'
+    text: 'nine',
   },
   {
     id: 10,
-    text: 'ten'
+    text: 'ten',
   },
   {
     id: 11,
-    text: 'eleven'
+    text: 'eleven',
   },
   {
     id: 12,
-    text: 'twelve'
+    text: 'twelve',
   },
   {
     id: 13,
-    text: 'thirteen'
+    text: 'thirteen',
   },
   {
     id: 14,
-    text: 'fourteen'
-  }
+    text: 'fourteen',
+  },
 ];
 
 function App() {
@@ -72,7 +72,8 @@ function App() {
     <div className='App'>
       <DndProvider backend={Backend}>
         <div className='grid'>
-          <Example Items={list1} /> <Example Items={list2} />
+          <Example ContainerId={1} Items={list1} />{' '}
+          <Example ContainerId={2} Items={list2} />
         </div>
       </DndProvider>
     </div>
