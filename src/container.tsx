@@ -3,65 +3,38 @@ import { useDrop } from 'react-dnd';
 import Card from './card';
 import update from 'immutability-helper';
 import ItemTypes from './item-types';
+import { ICard } from './models';
 
 const style = {
-  width: 400,
+  width: 400
 };
 
-export interface ContainerState {
-  cards: any[];
+interface IProps {
+  Items: ICard[];
 }
 
-const ITEMS = [
-  {
-    id: 1,
-    text: 'Write a cool JS library',
-  },
-  {
-    id: 2,
-    text: 'Make it generic enough',
-  },
-  {
-    id: 3,
-    text: 'Write README',
-  },
-  {
-    id: 4,
-    text: 'Create some examples',
-  },
-  {
-    id: 5,
-    text: 'Spam in Twitter and IRC to promote it',
-  },
-  {
-    id: 6,
-    text: '???',
-  },
-  {
-    id: 7,
-    text: 'PROFIT',
-  },
-];
+const Container: React.FC<IProps> = ({ Items }) => {
+  const [cards, setCards] = useState(Items);
 
-const Container: React.FC = () => {
-  const [cards, setCards] = useState(ITEMS);
-  const moveCard = (id: string, atIndex: number) => {
-    const { card, index } = findCard(id);
+  const moveCard = (card: ICard, atIndex: number) => {
+    //console.log(card, Items);
+    const index = findCard(card.id).index;
+    console.log(card, index);
     setCards(
       update(cards, {
         $splice: [
-          [index, 1],
-          [atIndex, 0, card],
-        ],
+          [index, index > -1 ? 1 : 0],
+          [atIndex, 0, card]
+        ]
       })
     );
   };
 
-  const findCard = (id: string) => {
-    const card = cards.filter(c => `${c.id}` === id)[0];
+  const findCard = (id: number) => {
+    const card = cards.filter(c => c.id === id)[0];
     return {
       card,
-      index: cards.indexOf(card),
+      index: cards.indexOf(card)
     };
   };
 
@@ -72,7 +45,7 @@ const Container: React.FC = () => {
         {cards.map(card => (
           <Card
             key={card.id}
-            id={`${card.id}`}
+            id={card.id}
             text={card.text}
             moveCard={moveCard}
             findCard={findCard}

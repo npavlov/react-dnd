@@ -1,53 +1,56 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import ItemTypes from './item-types';
+import { ICard } from './models';
 
 const style = {
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
   marginBottom: '.5rem',
   backgroundColor: 'white',
-  cursor: 'move',
+  cursor: 'move'
 };
 
 export interface CardProps {
-  id: string;
+  id: number;
   text: string;
-  moveCard: (id: string, to: number) => void;
-  findCard: (id: string) => { index: number };
+  moveCard: (card: ICard, to: number) => void;
+  findCard: (id: number) => { index: number };
 }
 
 interface Item {
   type: string;
-  id: string;
+  id: number;
   originalIndex: string;
+  text: string;
 }
 
 const Card: React.FC<CardProps> = ({ id, text, moveCard, findCard }) => {
   const originalIndex = findCard(id).index;
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.CARD, id, originalIndex },
+    item: { type: ItemTypes.CARD, id, originalIndex, text },
     collect: monitor => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor.isDragging()
     }),
     end: (dropResult, monitor) => {
-      const { id: droppedId, originalIndex } = monitor.getItem();
+      const { id: droppedId, originalIndex, text } = monitor.getItem();
       const didDrop = monitor.didDrop();
+      console.log(dropResult);
       if (!didDrop) {
-        moveCard(droppedId, originalIndex);
+        moveCard({ id: droppedId, text }, originalIndex);
       }
-    },
+    }
   });
 
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,
     canDrop: () => false,
-    hover({ id: draggedId }: Item) {
-      if (draggedId !== id) {
+    hover(draggedItem: Item) {
+      if (draggedItem.id !== id) {
         const { index: overIndex } = findCard(id);
-        moveCard(draggedId, overIndex);
+        moveCard({ id: draggedItem.id, text: draggedItem.text }, overIndex);
       }
-    },
+    }
   });
 
   const opacity = isDragging ? 0 : 1;
